@@ -2,18 +2,34 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'ru.clevertec'
+version '1.3.5'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-test {
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class': 'ru.clevertec.App',
+                'name': project.name,
+                'version': project.version)
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+tasks.named('test') {
     useJUnitPlatform()
+}
+
+java {
+    withSourcesJar()
 }
