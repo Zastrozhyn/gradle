@@ -30,6 +30,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-java {
-    withSourcesJar()
+class GreetingPlugin implements Plugin<Project> {
+    void apply(Project project) {
+        project.task('hello')  {
+            println "My simple plugin"
+        }
+    }
 }
+apply plugin: GreetingPlugin
